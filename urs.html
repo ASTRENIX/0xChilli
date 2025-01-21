@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>اذهب لدوراتك</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #1d1f21;
+            color: #c5c8c6;
+            margin: 0;
+            padding: 0;
+        }
+        nav {
+            background-color: #282a2e;
+            padding: 15px;
+            text-align: center;
+        }
+        nav a {
+            color: #c5c8c6;
+            text-decoration: none;
+            padding: 10px 20px;
+            margin: 0 15px;
+            border-radius: 5px;
+            font-size: 18px;
+        }
+        nav a:hover {
+            background-color: #cc342b;
+        }
+        h1 {
+            color: #cc342b;
+            margin-top: 50px;
+        }
+        .container {
+            text-align: center;
+            padding: 50px;
+        }
+        .container p {
+            font-size: 18px;
+        }
+        .top-right {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+        }
+        button {
+            background-color: #cc342b;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #a62920;
+        }
+        .box {
+            width: 200px;
+            height: 100px;
+            background-color: #282a2e;
+            color: #c5c8c6;
+            border-radius: 10px;
+            margin: 10px;
+            display: inline-block;
+            text-align: center;
+            line-height: 100px;
+            font-size: 18px;
+            cursor: pointer;
+        }
+        .box:hover {
+            background-color: #cc342b;
+        }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <a href="index.html">تسجيل</a>
+        <a href="about.html">About Me</a>
+        <a href="urs.html">اذهب لدوراتك</a>
+        <a href="main.html">الرئيسيه</a>
+    </nav>
+
+    <div class="container">
+        <h1>دوراتك التعليمية</h1>
+        <p>اختر من الدورات التالية للبدء في التعلم:</p>
+
+        <!-- Boxes for course access -->
+        <div id="box1" class="box" onclick="redirectToCourse(1)">
+            اشتري احد الدورات لفتح الدوره
+        </div>
+        <div id="box2" class="box" onclick="redirectToCourse(2)">
+            اشتري احد الدورات لفتح الدوره
+        </div>
+        <div id="box3" class="box" onclick="redirectToCourse(3)">
+            اشتري احد الدورات لفتح الدوره
+        </div>
+
+    </div>
+
+    <script>
+        // Simulating checking the redemption status using localStorage
+        let redeemedCode = localStorage.getItem('redeemedCode');  // Retrieve the redeemed code status
+
+        // Function to handle the course box based on code redemption
+        function updateCourseBoxes() {
+            if (redeemedCode === 'redeemcode1web') {
+                document.getElementById('box1').textContent = 'الدورة 1: الوصول إلى الفيديو';
+                document.getElementById('box1').onclick = function() {
+                    window.location.href = 'webvideo.html';  // Redirect to webvideo.html
+                };
+            } else {
+                // If no code is redeemed, keep the message for purchasing courses
+                document.getElementById('box1').textContent = 'اشتري احد الدورات لفتح الدوره';
+                document.getElementById('box1').onclick = function() {
+                    alert('يرجى إدخال رمز التفعيل');
+                };
+            }
+
+            // For other boxes, add similar checks if needed
+        }
+
+        // Function to handle redirect to a course (can be expanded for each box)
+        function redirectToCourse(courseNumber) {
+            if (redeemedCode === 'redeemcode1web') {
+                if (courseNumber === 1) {
+                    window.location.href = 'webvideo.html';  // Redirect to the correct course page
+                }
+            } else {
+                alert('يرجى إدخال رمز التفعيل');
+            }
+        }
+
+        // Call this function when the page loads to set up the boxes
+        updateCourseBoxes();
+    </script>
+
+</body>
+</html>
