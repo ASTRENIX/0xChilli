@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Web Video</title>
+    <title>Web Video - Redeem Access</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -13,25 +13,60 @@
             margin: 0;
             padding: 0;
         }
+
+        .hidden {
+            display: none;
+        }
+
+        .redeem-container {
+            margin: 20px auto;
+            max-width: 400px;
+            padding: 20px;
+            background-color: #282a2e;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.5);
+        }
+
+        input {
+            width: 80%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #373b41;
+            border-radius: 4px;
+            background-color: #1d1f21;
+            color: #c5c8c6;
+        }
+
+        button {
+            background-color: #cc342b;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #a62920;
+        }
+
         .video-container {
             margin: 20px auto;
-            max-width: 600px; /* Reduce the max-width to make videos smaller */
+            max-width: 600px;
         }
+
         video {
             width: 100%;
             border: 2px solid #cc342b;
             border-radius: 8px;
         }
-        p {
-            margin-top: 10px;
-            font-size: 16px;
-            color: #c5c8c6;
-        }
+
         .large-text {
             font-size: 20px;
             font-weight: bold;
             color: #ffffff;
         }
+
         .download-link {
             display: inline-block;
             margin-top: 8px;
@@ -39,36 +74,83 @@
             color: #cc342b;
             font-weight: bold;
         }
+
         .download-link:hover {
             text-decoration: underline;
         }
     </style>
 </head>
 <body>
-    <h1>اهلا و سهلا بك في دورة تهكير المواقع</h1>
-    <p>مشاهده ممتعه و اتمنى اني افدتك  :</p>
-
-    <div class="video-container">
-        <!-- Add your video files here -->
-        <video controls>
-            <source src="video1.mp4" type="video/mp4">
-            Your browser does not support the video tag.
-        </video>
-        <p class="large-text">المقطع الاول</p>
-        <a href="video1.mp4" download class="download-link">اضغط لتحميل المقطع</a>
-        
-        <video controls>
-            <source src="video2.mp4" type="video/mp4">
-            Your browser does not support the video tag.
-        </video>
-        <a href="video2.mp4" download class="download-link">Download Video 2</a>
-
-        <video controls>
-            <source src="video3.mp4" type="video/mp4">
-            Your browser does not support the video tag.
-        </video>
-        <a href="video3.mp4" download class="download-link">Download Video 3</a>
+    <!-- Redeem Code Form -->
+    <div class="redeem-container hidden" id="redeemContainer">
+        <h1>Enter Access Code</h1>
+        <input type="text" id="redeemCode" placeholder="Enter your code" required>
+        <button onclick="redeemCode()">Redeem</button>
+        <p id="message" style="color: #cc342b; font-weight: bold;"></p>
     </div>
 
+    <!-- Hidden Content -->
+    <div class="hidden" id="contentContainer">
+        <h1>اهلا و سهلا بك في دورة تهكير المواقع</h1>
+        <p>مشاهده ممتعه و اتمنى اني افدتك :</p>
+
+        <div class="video-container">
+            <video controls>
+                <source src="video1.mp4" type="video/mp4">
+                Your browser does not support the video tag.
+            </video>
+            <p class="large-text">المقطع الاول</p>
+            <a href="video1.mp4" download class="download-link">اضغط لتحميل المقطع</a>
+            
+            <video controls>
+                <source src="video2.mp4" type="video/mp4">
+                Your browser does not support the video tag.
+            </video>
+            <p class="large-text">المقطع الثاني</p>
+            <a href="video2.mp4" download class="download-link">اضغط لتحميل المقطع</a>
+
+            <video controls>
+                <source src="video3.mp4" type="video/mp4">
+                Your browser does not support the video tag.
+            </video>
+            <p class="large-text">المقطع الثالث</p>
+            <a href="video3.mp4" download class="download-link">اضغط لتحميل المقطع</a>
+        </div>
+    </div>
+
+    <script>
+        const correctCode = "0xchillicodeweb123"; // The correct redeem code
+        const isRedeemed = localStorage.getItem("codeRedeemed"); // Check if the code has already been redeemed
+
+        // DOM elements
+        const redeemContainer = document.getElementById('redeemContainer');
+        const contentContainer = document.getElementById('contentContainer');
+        const message = document.getElementById('message');
+
+        // Function to redeem code
+        function redeemCode() {
+            const inputCode = document.getElementById('redeemCode').value;
+
+            if (inputCode === correctCode) {
+                message.textContent = "Code accepted! Loading content...";
+                message.style.color = "#4CAF50"; // Green color
+                localStorage.setItem("codeRedeemed", "true"); // Save the redemption in localStorage
+                setTimeout(() => {
+                    redeemContainer.classList.add('hidden');
+                    contentContainer.classList.remove('hidden');
+                }, 1000); // Delay for effect
+            } else {
+                message.textContent = "Invalid code. Please try again.";
+                message.style.color = "#cc342b"; // Red color
+            }
+        }
+
+        // Show content or redemption form based on previous redemption
+        if (isRedeemed === "true") {
+            contentContainer.classList.remove('hidden'); // Show content
+        } else {
+            redeemContainer.classList.remove('hidden'); // Show redeem form
+        }
+    </script>
 </body>
 </html>
