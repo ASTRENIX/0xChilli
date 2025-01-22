@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ar">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>under construction</title>
+    <title>0xChilli - الرئيسية</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -12,13 +12,29 @@
             margin: 0;
             padding: 0;
         }
+        nav {
+            background-color: #282a2e;
+            padding: 15px;
+            text-align: center;
+        }
+        nav a {
+            color: #c5c8c6;
+            text-decoration: none;
+            padding: 10px 20px;
+            margin: 0 15px;
+            border-radius: 5px;
+            font-size: 18px;
+        }
+        nav a:hover {
+            background-color: #cc342b;
+        }
         .container {
             max-width: 600px;
             margin: 0 auto;
             padding: 20px;
             text-align: center;
         }
-        h1 {
+        h1, h2 {
             color: #cc342b;
         }
         form {
@@ -26,6 +42,7 @@
             padding: 20px;
             border-radius: 8px;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+            margin-top: 20px;
         }
         input {
             width: 90%;
@@ -44,32 +61,235 @@
             border-radius: 4px;
             cursor: pointer;
         }
-
-        .large-text {
-            font-size: 20px;
-            font-weight: bold;
-            color: #ffffff;
-        }
-        
         button:hover {
             background-color: #a62920;
+        }
+        .hidden {
+            display: none;
         }
         .message {
             margin-top: 15px;
             font-weight: bold;
         }
-        .hidden {
-            display: none;
-        }
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1>Welcome again friend <3</h1>
-        <p class="large-text">the site is under construction.</p>
-        <p class="large-text">الموقع تحت الصيانه حاليا و يتم اجراء اصلاحات و تعديلات</p>
 
+    <!-- قائمة التنقل -->
+    <nav id="mainNav">
+        <a href="#register" class="guest-only">تسجيل</a>
+        <a href="#login" class="guest-only">تسجيل الدخول</a>
+        <a href="#home" class="user-only hidden">الرئيسيه</a>
+        <a href="#redeem" id="redeemLink" class="user-only hidden">استرداد الرمز</a>
+        <a href="#courses" class="user-only hidden">دوراتك</a>
+        <a href="#about" class="user-only hidden">About Me</a>
+        <a href="#logout" class="user-only hidden" id="logout">تسجيل الخروج</a>
+    </nav>
+
+    <!-- الصفحة الرئيسية -->
+    <div class="container hidden" id="home">
+        <h1>مرحبًا بك في المنصة!</h1>
+        <p>استخدم الروابط أعلاه للتنقل بين الخيارات المختلفة.</p>
+    </div>
+
+    <!-- تسجيل المستخدم -->
+    <div class="container" id="register">
+        <h2>التسجيل</h2>
+        <form id="registerForm">
+            <input type="text" id="registerUsername" placeholder="اسم المستخدم" required>
+            <input type="password" id="registerPassword" placeholder="كلمة المرور" required>
+            <button type="submit">تسجيل</button>
+        </form>
+    </div>
+
+    <!-- تسجيل الدخول -->
+    <div class="container hidden" id="login">
+        <h2>تسجيل الدخول</h2>
+        <form id="loginForm">
+            <input type="text" id="username" placeholder="اسم المستخدم" required>
+            <input type="password" id="password" placeholder="كلمة المرور" required>
+            <button type="submit">تسجيل الدخول</button>
+        </form>
+    </div>
+
+    <!-- استرداد الأكواد -->
+    <div class="container hidden" id="redeem">
+        <h2>استرداد الكود</h2>
+        <form id="redeemForm">
+            <input type="text" id="redeemCode" placeholder="أدخل الكود الخاص بك" required>
+            <button type="submit">استرداد</button>
+        </form>
         <div id="redeemMessage" class="message"></div>
     </div>
+
+    <!-- دورات المستخدم -->
+    <div class="container hidden" id="courses">
+        <h2>دوراتك</h2>
+        <div id="coursesList">
+            <p>لم تقم باسترداد أي دورات بعد.</p>
+        </div>
+    </div>
+
+    <script>
+        // استرداد بيانات المستخدم من التخزين المحلي
+        const users = JSON.parse(localStorage.getItem('users')) || {};
+        let loggedInUser = localStorage.getItem('loggedInUser');
+        const redeemedCourses = JSON.parse(localStorage.getItem('redeemedCourses')) || {};
+    
+        // الأكواد الصالحة
+        const validCodes = {
+            "redeemcode1web": "<a href='https://0xchillicyber.org/webvideo.html' style='color: #c5c8c6; text-decoration: none;'>دورة تهكير المواقع</a>",
+        };
+    
+        function saveToLocalStorage() {
+            localStorage.setItem('users', JSON.stringify(users));
+            localStorage.setItem('redeemedCourses', JSON.stringify(redeemedCourses));
+            localStorage.setItem('loggedInUser', loggedInUser);
+        }
+    
+        // التحقق من كلمة المرور
+        function validatePassword(password) {
+            const passwordRegex = /^(?=.*[a-z])(?=.*\d)[a-zA-Z\d]{8,32}$/;
+            return passwordRegex.test(password);
+        }
+    
+        // تحديث الواجهة بناءً على حالة المستخدم
+        function updateUI() {
+            document.querySelectorAll('.guest-only').forEach(el => {
+                el.classList.toggle('hidden', loggedInUser !== null);
+            });
+            document.querySelectorAll('.user-only').forEach(el => {
+                el.classList.toggle('hidden', loggedInUser === null);
+            });
+    
+            // Reset visible sections
+            document.querySelectorAll('.container').forEach(section => {
+                section.classList.add('hidden');
+            });
+    
+            // Show default section based on user state
+            if (loggedInUser) {
+                document.getElementById('home').classList.remove('hidden');
+            } else {
+                document.getElementById('login').classList.remove('hidden');
+            }
+        }
+    
+        // تسجيل المستخدم
+        document.getElementById('registerForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const username = document.getElementById('registerUsername').value;
+            const password = document.getElementById('registerPassword').value;
+    
+            if (!validatePassword(password)) {
+                alert('كلمة المرور يجب أن تحتوي على حرف صغير ورقم واحد على الأقل (8-32 حرفًا).');
+                return;
+            }
+    
+            if (users[username]) {
+                alert('اسم المستخدم موجود بالفعل. يرجى تسجيل الدخول.');
+                document.getElementById('register').classList.add('hidden');
+                document.getElementById('login').classList.remove('hidden');
+            } else {
+                users[username] = password;
+                saveToLocalStorage();
+                alert('تم التسجيل بنجاح! يمكنك الآن تسجيل الدخول.');
+                document.getElementById('register').classList.add('hidden');
+                document.getElementById('login').classList.remove('hidden');
+            }
+        });
+    
+        // تسجيل الدخول
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+    
+            if (users[username] === password) {
+                loggedInUser = username;
+                saveToLocalStorage();
+                alert('تم تسجيل الدخول بنجاح!');
+                updateUI();
+            } else {
+                alert('اسم المستخدم أو كلمة المرور غير صحيحة.');
+            }
+        });
+    
+        // استرداد الأكواد
+        const redeemForm = document.getElementById('redeemForm');
+        if (redeemForm) {
+            redeemForm.addEventListener('submit', function (e) {
+                e.preventDefault();
+    
+                const code = document.getElementById('redeemCode').value.trim();
+                const messageElement = document.getElementById('redeemMessage');
+    
+                if (!loggedInUser) {
+                    messageElement.textContent = "يرجى تسجيل الدخول أولاً.";
+                    messageElement.style.color = "#cc342b";
+                    return;
+                }
+    
+                if (validCodes[code]) {
+                    if (!redeemedCourses[loggedInUser]) {
+                        redeemedCourses[loggedInUser] = [];
+                    }
+    
+                    if (redeemedCourses[loggedInUser].includes(validCodes[code])) {
+                        messageElement.textContent = "لقد استرددت هذا الكود من قبل.";
+                        messageElement.style.color = "#cc342b";
+                    } else {
+                        redeemedCourses[loggedInUser].push(validCodes[code]);
+                        saveToLocalStorage();
+                        messageElement.textContent = "تم استرداد الكود بنجاح!";
+                        messageElement.style.color = "#4CAF50";
+                        updateCoursesList();
+                    }
+                } else {
+                    messageElement.textContent = "الكود غير صالح. حاول مرة أخرى.";
+                    messageElement.style.color = "#cc342b";
+                }
+            });
+        }
+    
+        // تحديث قائمة الدورات
+        function updateCoursesList() {
+            const coursesList = document.getElementById('coursesList');
+            const userCourses = redeemedCourses[loggedInUser] || [];
+    
+            coursesList.innerHTML = userCourses.length
+                ? `<ul>${userCourses.map(course => `<li>${course}</li>`).join('')}</ul>`
+                : '<p>لم تقم باسترداد أي دورات بعد.</p>';
+        }
+    
+        // تسجيل الخروج
+        document.getElementById('logout').addEventListener('click', function() {
+            loggedInUser = null;
+            saveToLocalStorage();
+            alert('تم تسجيل الخروج بنجاح.');
+            updateUI();
+        });
+    
+        // التبديل بين الأقسام عند النقر على الروابط
+        document.querySelectorAll('nav a').forEach(link => {
+            link.addEventListener('click', function (e) {
+                e.preventDefault();
+    
+                const targetId = this.getAttribute('href').substring(1); // Get target section ID
+                document.querySelectorAll('.container').forEach(section => {
+                    section.classList.add('hidden');
+                });
+    
+                document.getElementById(targetId).classList.remove('hidden');
+            });
+        });
+    
+        // التهيئة
+        updateUI();
+        if (loggedInUser) {
+            updateCoursesList();
+        }
+    </script>    
+
 </body>
 </html>
