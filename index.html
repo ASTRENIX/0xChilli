@@ -82,7 +82,7 @@
         <a href="#home" class="user-only hidden">الرئيسيه</a>
         <a href="#redeem" id="redeemLink" class="user-only hidden">استرداد الرمز</a>
         <a href="#courses" class="user-only hidden">دوراتك</a>
-        <a href="#about" class="user-only hidden">About Me</a>
+        <a href="about.html" class="user-only hidden">About Me</a>
         <a href="#logout" class="user-only hidden" id="logout">تسجيل الخروج</a>
     </nav>
 
@@ -122,14 +122,6 @@
         <div id="redeemMessage" class="message"></div>
     </div>
 
-    <!-- دورات المستخدم -->
-    <div class="container hidden" id="courses">
-        <h2>دوراتك</h2>
-        <div id="coursesList">
-            <p>لم تقم باسترداد أي دورات بعد.</p>
-        </div>
-    </div>
-
     <script>
         // استرداد بيانات المستخدم من التخزين المحلي
         const users = JSON.parse(localStorage.getItem('users')) || {};
@@ -138,7 +130,11 @@
     
         // الأكواد الصالحة
         const validCodes = {
-            "redeemcode1web": "<a href='https://0xchillicyber.org/webvideo.html' style='color: #c5c8c6; text-decoration: none;'>دورة تهكير المواقع</a>",
+            "redeemcode1web": {
+                code: "copy this code :    0xchillicodeweb123",
+                
+                link: "<a href='https://0xchillicyber.org/webvideo.html' style='color: #c5c8c6; text-decoration: none;'>اضغط هنا للذهاب للمنصه</a>"
+            }
         };
     
         function saveToLocalStorage() {
@@ -231,35 +227,14 @@
                 }
     
                 if (validCodes[code]) {
-                    if (!redeemedCourses[loggedInUser]) {
-                        redeemedCourses[loggedInUser] = [];
-                    }
-    
-                    if (redeemedCourses[loggedInUser].includes(validCodes[code])) {
-                        messageElement.textContent = "لقد استرددت هذا الكود من قبل.";
-                        messageElement.style.color = "#cc342b";
-                    } else {
-                        redeemedCourses[loggedInUser].push(validCodes[code]);
-                        saveToLocalStorage();
-                        messageElement.textContent = "تم استرداد الكود بنجاح!";
-                        messageElement.style.color = "#4CAF50";
-                        updateCoursesList();
-                    }
+                    const { code: redeemCode, link } = validCodes[code];
+                    messageElement.innerHTML = `${redeemCode}<br>${link}`;
+                    messageElement.style.color = "#4CAF50";
                 } else {
                     messageElement.textContent = "الكود غير صالح. حاول مرة أخرى.";
                     messageElement.style.color = "#cc342b";
                 }
             });
-        }
-    
-        // تحديث قائمة الدورات
-        function updateCoursesList() {
-            const coursesList = document.getElementById('coursesList');
-            const userCourses = redeemedCourses[loggedInUser] || [];
-    
-            coursesList.innerHTML = userCourses.length
-                ? `<ul>${userCourses.map(course => `<li>${course}</li>`).join('')}</ul>`
-                : '<p>لم تقم باسترداد أي دورات بعد.</p>';
         }
     
         // تسجيل الخروج
@@ -286,9 +261,6 @@
     
         // التهيئة
         updateUI();
-        if (loggedInUser) {
-            updateCoursesList();
-        }
     </script>    
 
 </body>
