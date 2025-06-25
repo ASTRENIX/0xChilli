@@ -1,53 +1,565 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Renad's World 🎀</title>
-  <link rel="stylesheet" href="styles.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>0xchilli Web</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;400;600;700&display=swap');
+        
+        :root {
+            --primary-purple: rgb(150, 55, 244);
+            --neon-purple: rgba(150, 55, 244, 0.8);
+            --dark-bg: #0a0a0f;
+            --darker-bg: #050507;
+            --card-bg: rgba(20, 20, 30, 0.9);
+            --border-glow: rgba(150, 55, 244, 0.5);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Rajdhani', sans-serif;
+            background: var(--dark-bg);
+            color: #ffffff;
+            overflow-x: hidden;
+            min-height: 100vh;
+            position: relative;
+        }
+
+        /* Animated Background */
+        .cyber-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -2;
+            background: 
+                radial-gradient(circle at 20% 80%, rgba(150, 55, 244, 0.3) 0%, transparent 70%),
+                radial-gradient(circle at 80% 20%, rgba(150, 55, 244, 0.2) 0%, transparent 70%),
+                linear-gradient(45deg, var(--dark-bg), var(--darker-bg));
+        }
+
+        .cyber-grid {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            opacity: 0.1;
+            background-image: 
+                linear-gradient(rgba(150, 55, 244, 0.3) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(150, 55, 244, 0.3) 1px, transparent 1px);
+            background-size: 50px 50px;
+            animation: gridMove 20s linear infinite;
+        }
+
+        @keyframes gridMove {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(50px, 50px); }
+        }
+
+        /* Floating particles */
+        .particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+        }
+
+        .particle {
+            position: absolute;
+            background: var(--primary-purple);
+            border-radius: 50%;
+            pointer-events: none;
+            opacity: 0.6;
+            animation: float 15s infinite linear;
+        }
+
+        @keyframes float {
+            0% {
+                transform: translateY(100vh) rotate(0deg);
+                opacity: 0;
+            }
+            10% { opacity: 0.6; }
+            90% { opacity: 0.6; }
+            100% {
+                transform: translateY(-100vh) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        /* Header */
+        .header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+            backdrop-filter: blur(10px);
+            background: rgba(10, 10, 15, 0.8);
+            border-bottom: 1px solid var(--border-glow);
+            animation: slideDown 1s ease-out;
+        }
+
+        @keyframes slideDown {
+            from { transform: translateY(-100%); }
+            to { transform: translateY(0); }
+        }
+
+        .nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .logo {
+            font-family: 'Orbitron', monospace;
+            font-size: 1.8rem;
+            font-weight: 900;
+            color: var(--primary-purple);
+            text-shadow: 0 0 20px var(--neon-purple);
+            animation: pulseGlow 2s ease-in-out infinite alternate;
+        }
+
+        @keyframes pulseGlow {
+            from { text-shadow: 0 0 20px var(--neon-purple); }
+            to { text-shadow: 0 0 30px var(--neon-purple), 0 0 40px var(--neon-purple); }
+        }
+
+        /* Main Content */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 120px 2rem 2rem;
+        }
+
+        .hero {
+            text-align: center;
+            margin-bottom: 4rem;
+            animation: fadeInUp 1.5s ease-out;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .hero h1 {
+            font-family: 'Orbitron', monospace;
+            font-size: 4rem;
+            font-weight: 900;
+            margin-bottom: 1rem;
+            background: linear-gradient(45deg, #ffffff, var(--primary-purple), #ffffff);
+            background-size: 200% 200%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: gradientShift 3s ease-in-out infinite;
+        }
+
+        @keyframes gradientShift {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+
+        .hero .subtitle {
+            font-size: 1.5rem;
+            color: #b8b8b8;
+            margin-bottom: 2rem;
+            animation: fadeInUp 1.5s ease-out 0.5s both;
+        }
+
+        .glitch-text {
+            position: relative;
+            display: inline-block;
+        }
+
+        .glitch-text::before,
+        .glitch-text::after {
+            content: attr(data-text);
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        .glitch-text::before {
+            animation: glitch1 2s infinite;
+            color: #ff0040;
+            z-index: -1;
+        }
+
+        .glitch-text::after {
+            animation: glitch2 2s infinite;
+            color: #00ffff;
+            z-index: -2;
+        }
+
+        @keyframes glitch1 {
+            0%, 90%, 100% { transform: translate(0); }
+            20% { transform: translate(-2px, 2px); }
+            40% { transform: translate(-2px, -2px); }
+            60% { transform: translate(2px, 2px); }
+            80% { transform: translate(2px, -2px); }
+        }
+
+        @keyframes glitch2 {
+            0%, 90%, 100% { transform: translate(0); }
+            20% { transform: translate(2px, 2px); }
+            40% { transform: translate(2px, -2px); }
+            60% { transform: translate(-2px, 2px); }
+            80% { transform: translate(-2px, -2px); }
+        }
+
+        /* Cards */
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-glow);
+            border-radius: 15px;
+            padding: 2rem;
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            animation: fadeInUp 1.5s ease-out;
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            background: linear-gradient(45deg, var(--primary-purple), transparent, var(--primary-purple));
+            border-radius: 15px;
+            z-index: -1;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .card:hover::before {
+            opacity: 1;
+        }
+
+        .card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(150, 55, 244, 0.3);
+        }
+
+        .card-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            color: var(--primary-purple);
+            text-shadow: 0 0 20px var(--neon-purple);
+        }
+
+        .card h3 {
+            font-family: 'Orbitron', monospace;
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: #ffffff;
+        }
+
+        .card p {
+            color: #b8b8b8;
+            line-height: 1.6;
+        }
+
+        /* Social Links */
+        .social-section {
+            text-align: center;
+            margin-top: 4rem;
+            animation: fadeInUp 1.5s ease-out 1s both;
+        }
+
+        .social-section h2 {
+            font-family: 'Orbitron', monospace;
+            font-size: 2.5rem;
+            margin-bottom: 2rem;
+            color: var(--primary-purple);
+            text-shadow: 0 0 20px var(--neon-purple);
+        }
+
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .social-link {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem 2rem;
+            background: var(--card-bg);
+            border: 1px solid var(--border-glow);
+            border-radius: 50px;
+            color: #ffffff;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .social-link::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(150, 55, 244, 0.3), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .social-link:hover::before {
+            left: 100%;
+        }
+
+        .social-link:hover {
+            transform: scale(1.05);
+            box-shadow: 0 10px 30px rgba(150, 55, 244, 0.4);
+            border-color: var(--primary-purple);
+        }
+
+        .social-icon {
+            font-size: 1.5rem;
+            color: var(--primary-purple);
+        }
+
+        .social-username {
+            font-family: 'Orbitron', monospace;
+            font-weight: 600;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+            
+            .hero .subtitle {
+                font-size: 1.2rem;
+            }
+            
+            .nav {
+                padding: 1rem;
+            }
+            
+            .logo {
+                font-size: 1.5rem;
+            }
+            
+            .social-links {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .social-link {
+                width: 100%;
+                max-width: 300px;
+            }
+        }
+
+        /* Terminal effect */
+        .terminal {
+            font-family: 'Courier New', monospace;
+            background: rgba(0, 0, 0, 0.8);
+            border: 1px solid var(--primary-purple);
+            border-radius: 10px;
+            padding: 1rem;
+            margin: 2rem 0;
+            position: relative;
+        }
+
+        .terminal::before {
+            content: '●●●';
+            position: absolute;
+            top: 10px;
+            left: 15px;
+            color: var(--primary-purple);
+        }
+
+        .terminal-content {
+            margin-top: 1.5rem;
+            color: #00ff00;
+        }
+
+        .typing {
+            overflow: hidden;
+            border-right: 2px solid var(--primary-purple);
+            white-space: nowrap;
+            margin: 0 auto;
+            letter-spacing: 0.1em;
+            animation: typing 3s steps(40, end), blink-caret 0.75s step-end infinite;
+        }
+
+        @keyframes typing {
+            from { width: 0; }
+            to { width: 100%; }
+        }
+
+        @keyframes blink-caret {
+            from, to { border-color: transparent; }
+            50% { border-color: var(--primary-purple); }
+        }
+    </style>
 </head>
 <body>
-  <!-- Header Section -->
-  <header>
-    <h1>Welcome to Renad's World</h1>
-    <p>i made a game !</p>
-  </header>
+    <div class="cyber-bg"></div>
+    <div class="cyber-grid"></div>
+    <div class="particles" id="particles"></div>
 
-  <!-- Navigation -->
-  <nav>
-    <ul>
-      <li><a href="#about">About</a></li>
-      <li><a href="#game">Game</a></li>
-      <li><a href="#contact">Contact</a></li>
-    </ul>
-  </nav>
+    <header class="header">
+        <nav class="nav">
+            <div class="logo">0xchilli</div>
+        </nav>
+    </header>
 
-  <!-- About Section -->
-  <section id="about">
-    <h2>About Renad</h2>
-    <p>Hi! I'm Renad im 21 years old since i was young i wanted to program a game and see people play it</p>
-    <p>And we're here today! This website is a space for my projects and ideas. Enjoy your stay!</p>
-    <p>Unfortunately i can't upload the game to the playstore nor microsoft store but if people keep downloading it i could upload it</p>
-  </section>
+    <div class="container">
+        <section class="hero">
+            <h1 class="glitch-text" data-text="0xchilli">0xchilli</h1>
+            <p class="subtitle">Cyber Security Expert • Digital Innovator • Code Architect</p>
+            
+            <div class="terminal">
+                <div class="terminal-content">
+                    <div class="typing">root@0xchilli:~$ whoami</div>
+                </div>
+            </div>
+        </section>
 
-  <!-- Game Section -->
-  <section id="game">
-    <h2>Different Strokes</h2>
-    <p>Download and play my game, "Different Strokes," on your Android device!</p>
-    <a href="download.html" class="download-button">Download APK</a>
-  </section>
+        <section class="cards-grid">
+            <div class="card">
+                <div class="card-icon">🛡️</div>
+                <h3>Cybersecurity</h3>
+                <p>Advanced penetration testing, vulnerability assessment, and security architecture design. Protecting digital assets with cutting-edge defense strategies.</p>
+            </div>
+            
+            <div class="card">
+                <div class="card-icon">⚡</div>
+                <h3>Exploit Development</h3>
+                <p>Researching zero-day vulnerabilities, developing custom exploits, and creating innovative attack vectors for red team operations.</p>
+            </div>
+            
+            <div class="card">
+                <div class="card-icon">🔐</div>
+                <h3>Cryptography</h3>
+                <p>Implementing robust encryption systems, blockchain security, and cryptographic protocols for next-generation applications.</p>
+            </div>
+        </section>
 
-  <!-- Contact Section -->
-  <section id="contact">
-    <h2>Contact Me</h2>
-    <p>Feel free to reach out to me in snapchat : renadfnn</p>
-  </section>
+        <section class="social-section">
+            <h2>Connect With Me</h2>
+            <div class="social-links">
+                <a href="https://youtube.com/@dp4e" class="social-link" target="_blank" rel="noopener">
+                    <span class="social-icon">📺</span>
+                    <span class="social-username">dp4e</span>
+                </a>
+                
+                <a href="https://tiktok.com/@dux_" class="social-link" target="_blank" rel="noopener">
+                    <span class="social-icon">🎵</span>
+                    <span class="social-username">dux_</span>
+                </a>
+                
+                <a href="https://instagram.com/dp4e" class="social-link" target="_blank" rel="noopener">
+                    <span class="social-icon">📸</span>
+                    <span class="social-username">dp4e</span>
+                </a>
+            </div>
+        </section>
+    </div>
 
-  <!-- Footer -->
-  <footer>
-    <p>&copy; 2025 Renad. All rights reserved.</p>
-  </footer>
+    <script>
+        // Create floating particles
+        function createParticle() {
+            const particle = document.createElement('div');
+            particle.className = 'particle';
+            
+            const size = Math.random() * 4 + 1;
+            particle.style.width = size + 'px';
+            particle.style.height = size + 'px';
+            particle.style.left = Math.random() * 100 + '%';
+            particle.style.animationDelay = Math.random() * 15 + 's';
+            particle.style.animationDuration = (Math.random() * 10 + 10) + 's';
+            
+            document.getElementById('particles').appendChild(particle);
+            
+            setTimeout(() => {
+                particle.remove();
+            }, 25000);
+        }
 
-  <script src="script.js"></script>
+        // Generate particles continuously
+        setInterval(createParticle, 300);
+
+        // Initialize particles
+        for (let i = 0; i < 20; i++) {
+            setTimeout(createParticle, i * 100);
+        }
+
+        // Add mouse interaction
+        document.addEventListener('mousemove', (e) => {
+            const mouseX = e.clientX / window.innerWidth;
+            const mouseY = e.clientY / window.innerHeight;
+            
+            document.querySelectorAll('.card').forEach((card, index) => {
+                const intensity = 10;
+                const x = (mouseX - 0.5) * intensity;
+                const y = (mouseY - 0.5) * intensity;
+                
+                card.style.transform = `translate(${x}px, ${y}px) translateY(0px)`;
+            });
+        });
+
+        // Reset card positions when mouse leaves
+        document.addEventListener('mouseleave', () => {
+            document.querySelectorAll('.card').forEach(card => {
+                card.style.transform = 'translate(0px, 0px) translateY(0px)';
+            });
+        });
+
+        // Typing effect for terminal
+        setTimeout(() => {
+            const terminal = document.querySelector('.terminal-content');
+            terminal.innerHTML += '<br><span style="color: var(--primary-purple);">Cyber Security Expert | Ethical Hacker | Code Warrior</span>';
+        }, 3500);
+
+        // Add glitch effect on scroll
+        window.addEventListener('scroll', () => {
+            const scrolled = window.pageYOffset;
+            const rate = scrolled * -0.5;
+            
+            document.querySelector('.cyber-grid').style.transform = `translate(${rate}px, ${rate}px)`;
+        });
+    </script>
 </body>
 </html>
