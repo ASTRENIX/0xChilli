@@ -3,8 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="icon" type="image/png" href="assets/baricon.png" />
-    <title>0xchilli Web</title>
+    <title>0xchilli - Cyber Expert</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;400;600;700&display=swap');
         
@@ -30,6 +29,163 @@
             overflow-x: hidden;
             min-height: 100vh;
             position: relative;
+        }
+
+        /* Entry Screen Styles */
+        .entry-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, var(--dark-bg), var(--darker-bg), var(--dark-bg));
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            transition: all 1s ease-out;
+        }
+
+        .entry-screen.hidden {
+            opacity: 0;
+            visibility: hidden;
+            transform: scale(0.8);
+        }
+
+        .entry-title {
+            font-family: 'Orbitron', monospace;
+            font-size: 4rem;
+            font-weight: 900;
+            margin-bottom: 2rem;
+            background: linear-gradient(45deg, #ffffff, var(--primary-purple), #ffffff);
+            background-size: 200% 200%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: gradientShift 3s ease-in-out infinite;
+            text-align: center;
+        }
+
+        .ready-btn {
+            padding: 20px 40px;
+            font-size: 24px;
+            font-family: 'Orbitron', monospace;
+            font-weight: 600;
+            background: linear-gradient(45deg, var(--primary-purple), #8a2be2);
+            color: #ffffff;
+            border: none;
+            border-radius: 15px;
+            cursor: pointer;
+            box-shadow: 0 0 30px var(--neon-purple);
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .ready-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .ready-btn:hover::before {
+            left: 100%;
+        }
+
+        .ready-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 50px var(--neon-purple);
+        }
+
+        /* Music Controls */
+        .music-controls {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1001;
+            display: none;
+            background: var(--card-bg);
+            border: 1px solid var(--border-glow);
+            border-radius: 15px;
+            padding: 15px;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 10px 30px rgba(150, 55, 244, 0.3);
+        }
+
+        .music-controls.visible {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            animation: slideInRight 0.5s ease-out;
+        }
+
+        @keyframes slideInRight {
+            from {
+                opacity: 0;
+                transform: translateX(100px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .play-pause-btn {
+            background: var(--primary-purple);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            font-size: 20px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 15px var(--neon-purple);
+        }
+
+        .play-pause-btn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 0 25px var(--neon-purple);
+        }
+
+        .volume-slider {
+            width: 100px;
+            height: 6px;
+            appearance: none;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            background: linear-gradient(to right, var(--primary-purple), #8a2be2);
+            border-radius: 10px;
+            outline: none;
+            cursor: pointer;
+        }
+
+        .volume-slider::-webkit-slider-thumb,
+        .volume-slider::-moz-range-thumb {
+            height: 18px;
+            width: 18px;
+            background: #fff;
+            border: 2px solid var(--primary-purple);
+            border-radius: 50%;
+            cursor: pointer;
+            box-shadow: 0 0 10px var(--neon-purple);
+            -webkit-appearance: none;
+            appearance: none;
+        }
+
+        .volume-slider::-moz-range-thumb {
+            border: none;
         }
 
         /* Animated Background */
@@ -144,6 +300,12 @@
             max-width: 1200px;
             margin: 0 auto;
             padding: 120px 2rem 2rem;
+            opacity: 0;
+            transition: opacity 1.5s ease-out 0.5s;
+        }
+
+        .container.visible {
+            opacity: 1;
         }
 
         .hero {
@@ -362,35 +524,6 @@
             font-weight: 600;
         }
 
-        /* Responsive Design */
-        @media (max-width: 768px) {
-            .hero h1 {
-                font-size: 2.5rem;
-            }
-            
-            .hero .subtitle {
-                font-size: 1.2rem;
-            }
-            
-            .nav {
-                padding: 1rem;
-            }
-            
-            .logo {
-                font-size: 1.5rem;
-            }
-            
-            .social-links {
-                flex-direction: column;
-                align-items: center;
-            }
-            
-            .social-link {
-                width: 100%;
-                max-width: 300px;
-            }
-        }
-
         /* Terminal effect */
         .terminal {
             font-family: 'Courier New', monospace;
@@ -433,9 +566,75 @@
             from, to { border-color: transparent; }
             50% { border-color: var(--primary-purple); }
         }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .entry-title {
+                font-size: 2.5rem;
+            }
+            
+            .ready-btn {
+                padding: 15px 30px;
+                font-size: 18px;
+            }
+            
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+            
+            .hero .subtitle {
+                font-size: 1.2rem;
+            }
+            
+            .nav {
+                padding: 1rem;
+            }
+            
+            .logo {
+                font-size: 1.5rem;
+            }
+            
+            .social-links {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .social-link {
+                width: 100%;
+                max-width: 300px;
+            }
+            
+            .music-controls {
+                top: 10px;
+                right: 10px;
+                padding: 10px;
+            }
+            
+            .volume-slider {
+                width: 80px;
+            }
+        }
     </style>
 </head>
 <body>
+    <!-- Entry Screen -->
+    <div class="entry-screen" id="entryScreen">
+        <h1 class="entry-title">Made By Chilli</h1>
+        <button class="ready-btn" id="readyBtn">READY TO SEE?</button>
+    </div>
+
+    <!-- Music Controls -->
+    <div class="music-controls" id="musicControls">
+        <button class="play-pause-btn" id="playPauseBtn">⏸</button>
+        <input type="range" class="volume-slider" id="volumeSlider" min="0" max="1" step="0.01" value="0.2">
+    </div>
+
+    <!-- Audio Element -->
+    <audio id="backgroundAudio" loop>
+        <source src="2pac.mp3" type="audio/mpeg">
+        Your browser does not support the audio element.
+    </audio>
+
     <div class="cyber-bg"></div>
     <div class="cyber-grid"></div>
     <div class="particles" id="particles"></div>
@@ -446,7 +645,7 @@
         </nav>
     </header>
 
-    <div class="container">
+    <div class="container" id="mainContainer">
         <section class="hero">
             <h1 class="glitch-text" data-text="0xchilli">0xchilli</h1>
             <p class="subtitle">CyberSecurity Expert • Bug Bounty Hunter • Malware Analyst</p>
@@ -501,38 +700,97 @@
             <div class="social-links">
                 <a href="https://youtube.com/@dp4e" class="social-link" target="_blank" rel="noopener">
                     <span class="social-icon">
-        <img src="assets/youtube.svg" alt="youtube" width="50" height="50" />
-    </span>
+                        <img src="youtube.svg" alt="youtube" width="50" height="50" />
+                    </span>
                     <span class="social-username">youtube</span>
                 </a>
                 
                 <a href="https://tiktok.com/@dux_" class="social-link" target="_blank" rel="noopener">
                     <span class="social-icon">
-        <img src="assets/tiktok.svg" alt="tiktok" width="50" height="50" />
-    </span>
+                        <img src="tiktok.svg" alt="tiktok" width="50" height="50" />
+                    </span>
                     <span class="social-username">tiktok</span>
                 </a>
                 
                 <a href="https://instagram.com/dp4e" class="social-link" target="_blank" rel="noopener">
-    <span class="social-icon">
-        <img src="assets/insta.png" alt="Instagram" width="50" height="50"/>
-    </span>
-    <span class="social-username">instagram</span>
-</a>
-
-<a href="https://t.me/dp4ee" class="social-link" target="_blank" rel="noopener">
                     <span class="social-icon">
-        <img src="assets/tele.png" alt="Telegram" width="50" height="50" />
-    </span>
-                    <span class="social-username">Telegram</span>
+                        <img src="insta.png" alt="Instagram" width="50" height="50"/>
+                    </span>
+                    <span class="social-username">instagram</span>
                 </a>
 
+                <a href="https://t.me/dp4ee" class="social-link" target="_blank" rel="noopener">
+                    <span class="social-icon">
+                        <img src="tele.png" alt="Telegram" width="50" height="50" />
+                    </span>
+                    <span class="social-username">Telegram</span>
                 </a>
             </div>
         </section>
     </div>
 
     <script>
+        // Audio and control elements
+        const audio = document.getElementById('backgroundAudio');
+        const entryScreen = document.getElementById('entryScreen');
+        const readyBtn = document.getElementById('readyBtn');
+        const mainContainer = document.getElementById('mainContainer');
+        const musicControls = document.getElementById('musicControls');
+        const playPauseBtn = document.getElementById('playPauseBtn');
+        const volumeSlider = document.getElementById('volumeSlider');
+
+        let isPlaying = false;
+
+        // Ready button click handler
+        readyBtn.addEventListener('click', async () => {
+            try {
+                // Set initial volume
+                audio.volume = volumeSlider.value;
+                
+                // Start playing music
+                await audio.play();
+                isPlaying = true;
+                
+                // Hide entry screen and show main content
+                entryScreen.classList.add('hidden');
+                
+                setTimeout(() => {
+                    mainContainer.classList.add('visible');
+                    musicControls.classList.add('visible');
+                }, 500);
+                
+            } catch (error) {
+                console.warn('Autoplay failed:', error);
+                // Still show the main content even if audio fails
+                entryScreen.classList.add('hidden');
+                setTimeout(() => {
+                    mainContainer.classList.add('visible');
+                    musicControls.classList.add('visible');
+                }, 500);
+            }
+        });
+
+        // Play/pause button handler
+        playPauseBtn.addEventListener('click', () => {
+            if (isPlaying) {
+                audio.pause();
+                playPauseBtn.textContent = '▶';
+                isPlaying = false;
+            } else {
+                audio.play().then(() => {
+                    playPauseBtn.textContent = '⏸';
+                    isPlaying = true;
+                }).catch(err => {
+                    console.warn('Play failed:', err);
+                });
+            }
+        });
+
+        // Volume slider handler
+        volumeSlider.addEventListener('input', () => {
+            audio.volume = volumeSlider.value;
+        });
+
         // Create floating particles
         function createParticle() {
             const particle = document.createElement('div');
@@ -584,7 +842,9 @@
         // Typing effect for terminal
         setTimeout(() => {
             const terminal = document.querySelector('.terminal-content');
-            terminal.innerHTML += '<br><span style="color: var(--primary-purple);">CyberSecurity Expert | Male | Vantix founder</span>';
+            if (terminal) {
+                terminal.innerHTML += '<br><span style="color: var(--primary-purple);">CyberSecurity Expert | Male | Vantix founder</span>';
+            }
         }, 3500);
 
         // Add glitch effect on scroll
@@ -592,7 +852,10 @@
             const scrolled = window.pageYOffset;
             const rate = scrolled * -0.5;
             
-            document.querySelector('.cyber-grid').style.transform = `translate(${rate}px, ${rate}px)`;
+            const grid = document.querySelector('.cyber-grid');
+            if (grid) {
+                grid.style.transform = `translate(${rate}px, ${rate}px)`;
+            }
         });
     </script>
 </body>
